@@ -110,7 +110,7 @@ planet_facts = {
 
 selected_option = st.sidebar.selectbox("Select a planet or view:", planet_options)
 
-st.title("🌌 3D Solar System Explorer with Belts and Moons")
+st.title("🌌 3D Solar System Explorer")
 
 # Define celestial bodies with positions and properties
 bodies = {
@@ -255,7 +255,7 @@ if selected_moon != "None":
     fig.add_trace(go.Scatter3d(
         x=[moon_data["x"]], y=[0], z=[0],
         mode='markers+text',
-        marker=dict(size=moon_data["size"] * 3, color=moon_data["color"]),
+        marker=dict(size=moon_data["size"] * 20, color=moon_data["color"]),
         text=[selected_moon],
         textposition="top center",
         name=selected_moon
@@ -414,10 +414,27 @@ elif selected_option == "Show Entire Solar System":
             st.write(f"&nbsp;&nbsp;&nbsp;<span style='color:#e0e0e0'>Distance from Sun: {distance}</span>", unsafe_allow_html=True)
             for moon in planet_moons[planet]:
                 if moon in bodies:
-                    # Try to get distance from bodies dict (x value)
-                    moon_distance = bodies[moon]["x"]
+                    # Use provided moon-to-planet distances
+                    moon_distances = {
+                        "Luna": "384,400 km",
+                        "Phobos": "9,378 km",
+                        "Deimos": "23,460 km",
+                        "Io": "421,700 km",
+                        "Europa": "670,900 km",
+                        "Ganymede": "1,070,400 km",
+                        "Callisto": "1,882,700 km",
+                        "Titan": "1,222,000 km",
+                        "Enceladus": "238,000 km",
+                        "Miranda": "129,900 km",
+                        "Ariel": "191,000 km",
+                        "Umbriel": "266,000 km",
+                        "Titania": "436,000 km",
+                        "Oberon": "584,000 km",
+                        "Triton": "354,800 km"
+                    }
                     st.write(f"&nbsp;&nbsp;&nbsp;• {moon} (moon of {planet})  ")
-                    st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#e0e0e0'>Distance from Sun: {moon_distance}</span>", unsafe_allow_html=True)
+                    moon_distance = moon_distances.get(moon, "N/A")
+                    st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#e0e0e0'>Distance from planet: {moon_distance}</span>", unsafe_allow_html=True)
         # Also show dwarf planets, asteroids, oort objects not in planet_moons
     for name, data in bodies.items():
         if data["type"] in ["dwarf planet", "asteroid", "oort"] and name not in planet_moons:
@@ -452,4 +469,257 @@ if selected_option != "Show Entire Solar System":
     for key, value in planet_facts[selected_option].items():
         st.write(f"**{key}**: {value}")
 
+    # Additional interesting facts for planets and dwarf planets
+    extra_facts = {
+        "Mercury": [
+            "Surface Temperature Range: -173°C to 427°C",
+            "No atmosphere, so sky is always black"
+        ],
+        "Venus": [
+            "Surface Pressure: 92 times Earth's",
+            "Hottest planet in the solar system (up to 475°C)"
+        ],
+        "Earth": [
+            "Only planet known to support life",
+            "71% of surface is covered by water"
+        ],
+        "Mars": [
+            "Home to the largest volcano: Olympus Mons",
+            "Has seasons similar to Earth"
+        ],
+        "Jupiter": [
+            "Has the Great Red Spot, a giant storm",
+            "Fastest rotation: one day is about 10 hours"
+        ],
+        "Saturn": [
+            "Least dense planet; would float in water",
+            "Has the most extensive ring system"
+        ],
+        "Uranus": [
+            "Rotates on its side (axial tilt of 98°)",
+            "Coldest atmosphere in the solar system"
+        ],
+        "Neptune": [
+            "Strongest winds in the solar system (up to 2,100 km/h)",
+            "Discovered via mathematical prediction"
+        ],
+        "Pluto": [
+            "Surface is covered with nitrogen ice",
+            "Has a heart-shaped glacier called Tombaugh Regio"
+        ],
+        "Ceres": [
+            "Contains water ice beneath its surface",
+            "Only dwarf planet in the asteroid belt"
+        ],
+        "Haumea": [
+            "Fastest rotating large object in the solar system (day = 3.9 hours)",
+            "Has a ring around it"
+        ],
+        "Makemake": [
+            "Has a reddish surface due to tholins",
+            "Discovered in 2005"
+        ],
+        "Eris": [
+            "More massive than Pluto",
+            "Its discovery led to Pluto's reclassification as a dwarf planet"
+        ],
+        "Sedna": [
+            "One of the most distant known objects in the solar system",
+            "Has a very elongated orbit"
+        ]
+    }
+    if selected_option in extra_facts:
+        st.markdown("**More Interesting Facts:**")
+        for fact in extra_facts[selected_option]:
+            st.write(f"- {fact}")
 
+# Display selected moon facts below the 3D display when a moon is selected
+if selected_moon != "None":
+    st.markdown("---")
+    st.subheader(f"Facts about {selected_moon}")
+    moon_facts = {
+        "Luna": {
+            "Distance from Earth": "384,400 km",
+            "Diameter": "3,474 km",
+            "Orbital Period": "27.3 days"
+        },
+        "Phobos": {
+            "Distance from Mars": "9,378 km",
+            "Diameter": "22.2 km",
+            "Orbital Period": "0.3 days"
+        },
+        "Deimos": {
+            "Distance from Mars": "23,460 km",
+            "Diameter": "12.4 km",
+            "Orbital Period": "1.3 days"
+        },
+        "Io": {
+            "Distance from Jupiter": "421,700 km",
+            "Diameter": "3,643 km",
+            "Orbital Period": "1.8 days"
+        },
+        "Europa": {
+            "Distance from Jupiter": "670,900 km",
+            "Diameter": "3,122 km",
+            "Orbital Period": "3.5 days"
+        },
+        "Ganymede": {
+            "Distance from Jupiter": "1,070,400 km",
+            "Diameter": "5,268 km",
+            "Orbital Period": "7.2 days"
+        },
+        "Callisto": {
+            "Distance from Jupiter": "1,882,700 km",
+            "Diameter": "4,821 km",
+            "Orbital Period": "16.7 days"
+        },
+        "Titan": {
+            "Distance from Saturn": "1,222,000 km",
+            "Diameter": "5,151 km",
+            "Orbital Period": "15.9 days"
+        },
+        "Enceladus": {
+            "Distance from Saturn": "238,000 km",
+            "Diameter": "504 km",
+            "Orbital Period": "1.4 days"
+        },
+        "Miranda": {
+            "Distance from Uranus": "129,900 km",
+            "Diameter": "471 km",
+            "Orbital Period": "1.4 days"
+        },
+        "Ariel": {
+            "Distance from Uranus": "191,000 km",
+            "Diameter": "1,158 km",
+            "Orbital Period": "2.5 days"
+        },
+        "Umbriel": {
+            "Distance from Uranus": "266,000 km",
+            "Diameter": "1,169 km",
+            "Orbital Period": "4.1 days"
+        },
+        "Titania": {
+            "Distance from Uranus": "436,000 km",
+            "Diameter": "1,578 km",
+            "Orbital Period": "8.7 days"
+        },
+        "Oberon": {
+            "Distance from Uranus": "584,000 km",
+            "Diameter": "1,523 km",
+            "Orbital Period": "13.5 days"
+        },
+        "Triton": {
+            "Distance from Neptune": "354,800 km",
+            "Diameter": "2,706 km",
+            "Orbital Period": "5.9 days"
+        },
+        "Charon": {
+            "Distance from Pluto": "19,570 km",
+            "Diameter": "1,212 km",
+            "Orbital Period": "6.4 days"
+        },
+        "Hi’iaka": {
+            "Distance from Haumea": "49,500 km",
+            "Diameter": "310 km",
+            "Orbital Period": "49.1 days"
+        },
+        "Namaka": {
+            "Distance from Haumea": "39,300 km",
+            "Diameter": "170 km",
+            "Orbital Period": "18.3 days"
+        },
+        "Dysnomia": {
+            "Distance from Eris": "37,350 km",
+            "Diameter": "700 km",
+            "Orbital Period": "15.8 days"
+        }
+    }
+    if selected_moon in moon_facts:
+        for key, value in moon_facts[selected_moon].items():
+            st.write(f"**{key}**: {value}")
+    else:
+        st.write("No facts available for this moon.")
+
+    # Additional interesting facts for moons
+    moon_extra_facts = {
+        "Luna": [
+            "Only place beyond Earth humans have visited",
+            "Causes Earth's tides"
+        ],
+        "Phobos": [
+            "Orbits Mars in just 7.6 hours",
+            "Slowly spiraling inward; may crash into Mars in 50 million years"
+        ],
+        "Deimos": [
+            "Smallest moon of Mars",
+            "Very smooth surface due to thick regolith"
+        ],
+        "Io": [
+            "Most volcanically active body in the solar system",
+            "Surface constantly changing due to eruptions"
+        ],
+        "Europa": [
+            "May have a subsurface ocean",
+            "Surface is mostly water ice"
+        ],
+        "Ganymede": [
+            "Largest moon in the solar system",
+            "Has its own magnetic field"
+        ],
+        "Callisto": [
+            "Most heavily cratered object in the solar system",
+            "May have a subsurface ocean"
+        ],
+        "Titan": [
+            "Only moon with a thick atmosphere",
+            "Has lakes and rivers of liquid methane and ethane"
+        ],
+        "Enceladus": [
+            "Shoots water vapor and ice from its south pole",
+            "May have a subsurface ocean"
+        ],
+        "Miranda": [
+            "Has giant canyons up to 20 km deep",
+            "Surface looks patchwork due to geological activity"
+        ],
+        "Ariel": [
+            "Brightest of Uranus's moons",
+            "Has many valleys and ridges"
+        ],
+        "Umbriel": [
+            "Darkest of Uranus's moons",
+            "Has a mysterious bright ring called the 'Wunda'"
+        ],
+        "Titania": [
+            "Largest moon of Uranus",
+            "Has huge fault valleys"
+        ],
+        "Oberon": [
+            "Second largest moon of Uranus",
+            "Surface covered in impact craters"
+        ],
+        "Triton": [
+            "Orbits Neptune backwards (retrograde)",
+            "Has geysers that shoot nitrogen gas"
+        ],
+        "Charon": [
+            "Half the size of Pluto",
+            "Has a reddish north pole"
+        ],
+        "Hi’iaka": [
+            "Largest moon of Haumea",
+            "Surface is mostly water ice"
+        ],
+        "Namaka": [
+            "Smaller moon of Haumea",
+            "Has an irregular orbit"
+        ],
+        "Dysnomia": [
+            "Only known moon of Eris",
+            "Discovered in 2005"
+        ]
+    }
+    if selected_moon in moon_extra_facts:
+        st.markdown("**More Interesting Facts:**")
+        for fact in moon_extra_facts[selected_moon]:
+            st.write(f"- {fact}")
